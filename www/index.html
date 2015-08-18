@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+  </head>
+  <body ng-app="starter">
+
+  <ion-side-menus>
+
+    <!-- Center content -->
+    <ion-side-menu-content>
+      <ion-header-bar class="sidebar">
+        <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
+        <h1 class="title app-font">Voice of Cricket</h1>
+      </ion-header-bar>
+      <ion-content class="background">
+        <div class="input-label">
+          &nbsp;
+        </div>
+        <div class="center">
+          <select class="center picker app-font">
+            <option selected>England vs Australia</option>
+            <option>Sri Lanka vs India</option>
+            <option>New Zealand vs South Africa</option>
+          </select>
+
+<!--
+          <select name="singleSelect" class="center picker app-font" ng-model="data.singleSelect">
+            <option value="option-1">Option 1</option>
+            <option value="option-2">Option 2</option>
+          </select><br>
+-->
+
+<dropdown placeholder="Colour..." list="colours" selected="colour" property="name"></dropdown>
+<!--
+          <button class="button button-icon center talk-button" ng-click="newTask()">
+            <i class="icon ion-compose center"></i>
+          </button>
+-->
+        </div>
+
+
+      </ion-content>
+
+      <ion-footer-bar>
+        <div class="bar bar-footer">
+        <button class="button button-clear center">
+          <img src="img/StartButton.png">
+        </button>
+        </div>
+      </ion-footer-bar>
+    </ion-side-menu-content>
+
+    <!-- Left menu -->
+    <ion-side-menu side="left" class="sidebar">
+      <ion-header-bar class="sidebar">
+        <ul class="list">
+          <li class="item sidebar">
+            <div class="item range sidebar">
+              <label for="repeat-fader">Update frequency</label>
+              <input id="repeat-fader" type="range" name="repeat-time">
+              <output for="repeat-fader" id=volume>50</output>
+            </div>
+
+            <div class="item range sidebar">
+              Choose Accent:
+              <select class="sidebar-picker">
+                <option selected>English</option>
+                <option>Australian</option>
+                <option>South African</option>
+              </select>
+            </div>
+          </li>
+      </ul>
+      </ion-header-bar>
+    </ion-side-menu>
+
+  </ion-side-menus>
+
+  </body>
+</html>

@@ -1,0 +1,124 @@
+/* Empty. Add your own CSS if you like */
+
+.background {
+    background:url(../img/boundary1.jpg) no-repeat center center fixed; /* 170px x 200px */
+    -webkit-background-size: cover;
+    -moz-backgrond-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    /* position in the center of the screen */
+    position:absolute;
+
+    /* text area height */
+    height:100%;
+    /* text area width */
+    width:100%;
+    //text-align:center;
+    /* image height is 200px (bottom 20px are overlapped with text) */
+    padding:0px 0px 0px 0px;
+    /* offset vertical: half of image height and text area height */
+    /* offset horizontal: half of text area width */
+    margin:0px 0px 0px 0px;
+}
+
+.sidebar {
+  background: #33cc33;
+  border: none;
+}
+
+.center-content > *  {
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+}
+
+.center {
+    width:100%;
+    text-align: center
+}
+
+.talk-button {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../img/StartButton.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+
+/*
+    border: none !important;
+    background: url(../img/StartButton.png) 0 0;
+    background-color: transparent !important;
+*/
+
+/*
+    width:auto;
+    height:auto;
+    max-width:MaxSize;
+    max-height:MaxSize;
+*/
+
+/*
+    width:70%;
+    height:70%;
+    background-size: 100% auto
+*/
+
+}
+
+.bar-footer{
+    height:140px;
+    border: none !important;
+    background-color: transparent !important;
+}
+
+
+.picker {
+    width: 50%;
+    background-color: transparent;
+    font-size: 150%
+}
+
+.app-font { 
+    font-family: Montserrat;
+    src: url(../fonts/Montserrat-Regular.otf);
+    color: white
+}
+
+.sidebar-font {
+    font-size: 60%;
+    font-family: Montserrat;
+    src: url(../fonts/Montserrat-Regular.otf);
+    color: white
+}
+
+.sidebar-picker {
+    font-size: 60%;
+    font-family: Montserrat;
+    src: url(../fonts/Montserrat-Regular.otf);
+    color: white
+    background-color: transparent;
+}
+
+/*
+.select {
+    border: 1px solid #fff;
+    background-color: transparent;
+    font-family: Montserrat;
+    src: url(../fonts/Montserrat-Regular.otf);
+}
+*/
