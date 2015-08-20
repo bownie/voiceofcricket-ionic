@@ -7,16 +7,18 @@ angular.module('voiceOfCricket', ['ionic', 'matchesController'])
 
 // Cricscore api access
 //
+/*
 .controller('MatchesController', function($scope, $http) {
+  $scope.selectedMatch = 1;
+  console.log('Selected Option = ' + $scope.selectedMatch);
+
  $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
 
     // For JSON responses, resp.data contains the result
     //
     console.log('Success', resp);
     $scope.matches = resp.data;
-    $scope.selectedOption = $scope.matches[0];
 
-    console.log('Selected Option = ' + $scope.selectedOption);
 
   }, function(err) {
 
@@ -26,6 +28,7 @@ angular.module('voiceOfCricket', ['ionic', 'matchesController'])
   })
 
 })
+*/
 
 
 .run(function($ionicPlatform) {
