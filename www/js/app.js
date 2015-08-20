@@ -3,7 +3,30 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('voiceOfCricket', ['ionic', 'matchesController'])
+
+// Cricscore api access
+//
+.controller('MatchesController', function($scope, $http) {
+ $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
+
+    // For JSON responses, resp.data contains the result
+    //
+    console.log('Success', resp);
+    $scope.matches = resp.data;
+    $scope.selectedOption = $scope.matches[0];
+
+    console.log('Selected Option = ' + $scope.selectedOption);
+
+  }, function(err) {
+
+    // err.status will contain the status code
+    //
+    console.error('ERR', err);
+  })
+
+})
+
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -17,3 +40,4 @@ angular.module('starter', ['ionic'])
     }
   });
 })
+

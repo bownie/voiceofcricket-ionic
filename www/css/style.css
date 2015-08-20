@@ -48,6 +48,20 @@
     text-align: center
 }
 
+.image-wrapper {
+    max-width:100% !important;
+    height:auto;
+    display:block;
+    text-align: center
+}
+
+.image-wrapper img{
+    max-width:100% !important;
+    height:auto;
+    display:block;
+}
+
+
 .talk-button {
 
     position: absolute;
