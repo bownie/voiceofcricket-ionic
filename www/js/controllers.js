@@ -1,6 +1,6 @@
 // Controlling to fetch matches from from the cricscore API
 //
-var matchModule = angular.module('matchesController', ['ngResource']);
+var matchModule = angular.module('matchesController', []);
 
 matchModule.controller('MatchesController', function ($scope, $http) {
 
@@ -48,7 +48,7 @@ matchModule.controller('MatchesController', function ($scope, $http) {
 });
 
 
-matchModule.controller('MatchController', ['$scope', '$http', function($scope, $http) {
+matchModule.controller('MatchController', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
     $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
 
@@ -63,11 +63,6 @@ matchModule.controller('MatchController', ['$scope', '$http', function($scope, $
       //
       //error('ERR', err);
     })
-/*
-    $scope.matches = [     { t1: 'Feature', t2: 'feature' }, 
-                           { t1: 'Bug', t2: 'bug' }, 
-                           { t1: 'Enhancement', t2: 'enhancement' } ];
-*/
 
     $scope.counter = 0;
     $scope.currentScore = "<nothing fetched>";
@@ -78,6 +73,28 @@ matchModule.controller('MatchController', ['$scope', '$http', function($scope, $
       //
       $http.get('http://cricscore-api.appspot.com/csa?id=' + $scope.selection).then(function(resp) {
         $scope.currentScore = resp.data[0].de; // the description
+
+        // Always store the last fetch
+        //
+        window.lastFetchedMatch = $scope.currentScore;
+
+        // Check to see if we play it straight away
+        //
+        if ($window.talkState == "started") {
+          //alert("Say this "+ $scope.currentScore);
+
+          // store in last fetch
+          // 
+          var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+          var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+          var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
+          u.lang = 'en-GB';
+          u.volume = 1.0;
+          u.rate = 1.0;
+          u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+          fallbackSpeechSynthesis.speak(u);
+
+        }
       });
     };
 
@@ -131,5 +148,27 @@ matchModule.controller('updateIntervalController', ['$scope', '$filter', functio
 
     return window.localStorage.setItem('updateInterval', $scope.data.updateInterval);
   }
+}]);
+
+matchModule.controller('accentController', ['$scope', '$filter', function($scope, $filter) {
+  $scope.data = {};
+  
+  $scope.data.accent = "English";
+
+  $scope.changeAccent = function() {
+
+    if ($scope.data.accent == "English" ) {
+      window.accentSelected = "en-GB";
+    } else if ($scope.data.accent == "Australian" ) {
+      window.accentSelected = "en-AU";
+    } else if ($scope.data.accent == "South African" ) {
+      window.accentSelected = "en-ZA";
+    } else if ($scope.data.accent == "American" ) {
+      window.accentSelected = "en-US";
+    } else {
+      alert("Can't change accent to " + $scope.data.accent);
+    }
+  }
+
 }]);
 

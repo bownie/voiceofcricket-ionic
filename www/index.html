@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+    <title>Voice of Cricket</title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -11,7 +11,12 @@
     <!-- Globals -->
     <script type='text/javascript'> 
       var talkState = "stopped"; 
+      var lastFetchedMatch = ""; 
+      var accentSelected = "en-GB"; 
     </script>
+
+    <!-- speech synthesis -->
+    <script type="text/javascript" src="lib/speech-synthesis/polyfill.min.js"></script>
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -19,7 +24,7 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
+    <!--<script src="lib/ionic/js/angular/angular-resource.min.js"></script>-->
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -86,11 +91,12 @@
             </div>
             <br/>
             <br/>
-            <div class="sidebar-item">
+            <div class="sidebar-item" ng-controller="accentController">
               Choose Accent:</br>
-              <select class="sidebar-picker">
-                <option selected>English</option>
+              <select class="sidebar-picker" ng-model="data.accent" ng-change="changeAccent()">
                 <option>Australian</option>
+                <option>American</option>
+                <option selected>English</option>
                 <option>South African</option>
               </select>
             </div>
@@ -113,11 +119,29 @@
       talkState = "started";
 
       <!-- Fetch the match and talk -->
-  
+      if (window.lastFetchedMatch != "") {
+        var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+        var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+
+        // To use polyfill directly call
+        // var fallbackSpeechSynthesis = window.speechSynthesisPolyfill;
+        // var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill;
+
+        var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
+        u.lang = window.accentSelected;
+        u.volume = 1.0;
+        u.rate = 1.0;
+        u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+        fallbackSpeechSynthesis.speak(u);
+      }
+
     } else {
   
       document.getElementById("talk-button").src="img/StartButton.png";
       talkState = "stopped";
+
+      var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+      fallbackSpeechSynthesis.cancel();
   
     }
   }
