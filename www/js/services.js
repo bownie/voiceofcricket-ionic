@@ -1,32 +1,18 @@
-angular.module('starter.services', ['ngResource'])
+var module = angular.module('matchesServices', []);
 
-.factory('cricketMatches', function ($resource) {
+module.factory('cricketMatches', function ($resource) {
     return $resource('http://cricscore-api.appspot.com/csa');
 });
 
-
-
-
-//angular.module('voiceOfCricket').service('dataservice', [ '$http', function ($http) {
-/*
-.module.service('myVoiceOfCricketService', function () {
-
-        // Base URL
-        //
-        var urlBase = 'http://cricscore-api.appspot.com/csa';
-
-        // All matches
-        //
-        this.getMatches = function () {
-            return $http.get(urlBase);
-        };
-
-        // Specific match
-        //
-        this.getMatch = function (id) {
-            return $http.get(urlBase+ '/' + id);
-        };
-
+module.factory('LS', function($window, $rootScope) {
+  return {
+    setData: function(key, val) {
+      $window.localStorage && $window.localStorage.setItem(key, val);
+      return this;
+    },
+    getData: function(key) {
+      return $window.localStorage && $window.localStorage.getItem(key);
+    }
+  };
 });
 
-*/

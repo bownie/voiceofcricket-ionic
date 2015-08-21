@@ -26,9 +26,8 @@
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
+    <!--<script src="js/services.js"></script>-->
     <script src="js/controllers.js"></script>
-
-    <!-- <script src="js/services.js"></script> -->
 
   </head>
   <!--<body ng-app="voiceOfCricket" ng-controller="MatchesController">-->
@@ -47,68 +46,16 @@
           &nbsp;
         </div>
 
-        <!-- our list and list items -->
-<!--
-        <ion-list>
-          <ion-item ng-repeat="match in matches">
-            {{match.t1}} vs {{match.t2}}
-          </ion-item>
-        </ion-list>
-
-        <label class="item item-input item-select">
-        <div class="input-label">
-          Lightsaber
-        </div>
-          <select>
-            <option>Blue</option>
-            <option selected>Green</option>
-            <option>Red</option>
-          </select>
-        </label>
--->
-
-        <!-- unused previos select -->
-          <!--<select class="center picker app-font" name="singleSelect" ng-model="item" ng-change="matchSelected()">-->
-            <!--<option ng-repeat="match in matches track by $index" value="{{match.id}}">{{match.t1}} vs {{match.t2}}</option>-->
-
         <div class="center" ng-controller="MatchController">
           <select class="picker" ng-model="selection" name="selectedMatch" ng-change="change()" ng-options="match.id as (match.t1 + ' vs ' + match.t2) for match in matches">
-          <!--<select class="center picker app-font" ng-model="confirmed" name="selectedMatch" ng-change="change()" ng-options="match for match in matches">-->
           </select>
           </br>
           <div class="score-text">{{currentScore}}</div>
         </div>
-
-<!--
-        <div class="center" ng-controller="TestController">
-          <select class="center picker app-font" ng-change="change()" ng-model="confirmed">
-            <option selected>England vs Australia</option>
-            <option>Sri Lanka vs India</option>
-            <option>New Zealand vs South Africa</option>
-          </select>
-          <tt>debug = {{confirmed}}</tt><br/>
-          <tt>counter = {{counter}}</tt><br/>
--->
-
-<!--
-          <select name="singleSelect" class="center picker app-font" ng-model="data.singleSelect">
-            <option value="option-1">Option 1</option>
-            <option value="option-2">Option 2</option>
-          </select><br>
--->
-
-<!--
-          <button class="button button-icon center talk-button" ng-click="newTask()">
-            <i class="icon ion-compose center"></i>
-          </button>
--->
-        <!--</div>-->
-
       </ion-content>
 
       <ion-footer-bar>
         <div class="image-wrapper center">
-        <!--<button class="button button-clear center talk-button">-->
         <button class="button button-clear center" onclick="toggleButton()">
           <img id="talk-button" src="img/StartButton.png">
         </button>
@@ -122,13 +69,20 @@
         <h2 class="title">Options</h2>
       </ion-header-bar>
       <ion-content>
+            <div ng-controller="updateIntervalController">
             <div class="sidebar-item">
             Update frequency:</br>
             </div>
             <div class="item range sidebar">
               <!--<label for="repeat-fader">Update frequency</label>-->
-              <input id="repeat-fader" type="range" name="repeat-time">
+              30secs
+              <input id="repeat-fader" type="range" name="repeat-time" min={{data.minRange}} max={{data.maxRange}} value="{{data.updateInterval}}" ng-change="formatInterval()" ng-model="data.updateInterval">
+              10mins
               <!--<output for="repeat-fader" id=volume>50</output>-->
+            </div>
+            <div class="siderbar-item center">
+            {{data.formattedInterval}}
+            </div>
             </div>
             <br/>
             <br/>

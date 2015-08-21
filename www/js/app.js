@@ -3,7 +3,20 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('voiceOfCricket', ['ionic', 'matchesController'])
+var app = angular.module('voiceOfCricket', ['ionic', 'matchesController'])
+
+app.factory('LS', function($window, $rootScope) {
+  return {
+    setData: function(key, val) {
+      $window.localStorage && $window.localStorage.setItem(key, val);
+      return this;
+    },
+    getData: function(key) {
+      return $window.localStorage && $window.localStorage.getItem(key);
+    }
+  };
+});
+
 
 // Cricscore api access
 //
@@ -31,7 +44,7 @@ angular.module('voiceOfCricket', ['ionic', 'matchesController'])
 */
 
 
-.run(function($ionicPlatform) {
+app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)

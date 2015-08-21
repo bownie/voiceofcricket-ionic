@@ -91,3 +91,45 @@ matchModule.controller('TestController', ['$scope', function($scope) {
   };
 }]);
 
+matchModule.controller('updateIntervalController', ['$scope', '$filter', function($scope, $filter) {
+  $scope.data = {};
+
+  if (window.localStorage.getItem('updateInterval') == null) {
+  
+    $scope.data.updateInterval = 30;
+
+  } else {
+
+    $scope.data.updateInterval = window.localStorage.getItem('updateInterval');
+
+  }
+ 
+  $scope.data.updateInterval = 60;
+  $scope.data.minRange = 30;
+  $scope.data.maxRange = 600;
+  $scope.data.formattedInterval = "1 min";
+
+  $scope.formatInterval = function() {
+    
+    if ($scope.data.updateInterval == 30) {
+
+      $scope.data.formattedInterval = "30 seconds";
+
+    } else if ($scope.data.updateInterval > 30 && $scope.data.updateInterval < 60 ) {
+
+      $scope.data.formattedInterval = "Less than a minute";
+
+    } else if ($scope.data.updateInterval > 60 && $scope.data.updateInterval < 120 ) {
+
+      $scope.data.formattedInterval = "1 minute or so";
+
+    } else if ($scope.data.updateInterval > 60 ) {
+
+      $scope.data.formattedInterval = $filter('number')($scope.data.updateInterval/60, 0) + " minutes";
+
+    }
+
+    return window.localStorage.setItem('updateInterval', $scope.data.updateInterval);
+  }
+}]);
+
