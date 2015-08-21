@@ -12,7 +12,7 @@
     height:100%;
     /* text area width */
     width:100%;
-    //text-align:center;
+    text-align:center;
     /* image height is 200px (bottom 20px are overlapped with text) */
     padding:0px 0px 0px 0px;
     /* offset vertical: half of image height and text area height */
@@ -66,17 +66,18 @@
 .image-wrapper {
     max-width:100% !important;
     height:auto;
-    display:block;
-    text-align: center
+    text-align: center;
+    border: none !important;
+    background-color: transparent !important;
 }
 
 /* Ensure that the img scales and is centred horizontally */
 .image-wrapper img{
     max-width:100% !important;
     height:auto;   /* image scaling */
-    display:block;
     margin-left: auto;  /* centring */
     margin-right: auto;
+    background-color: transparent !important;
 }
 
 .bar-footer{

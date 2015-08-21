@@ -8,8 +8,9 @@ matchModule.controller('MatchesController', function ($scope, $http) {
       console.log(mySelect);
     }
 
-
-    $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
+    // Use the local proxy defined in ionic.project
+    //
+    $http.get('/csa').then(function(resp) {
 
       // For JSON responses, resp.data contains the result
       //
