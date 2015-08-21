@@ -48,7 +48,7 @@ matchModule.controller('MatchesController', function ($scope, $http) {
 });
 
 
-matchModule.controller('NewController', ['$scope', '$http', function($scope, $http) {
+matchModule.controller('MatchController', ['$scope', '$http', function($scope, $http) {
 
     $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
 
@@ -77,7 +77,7 @@ matchModule.controller('NewController', ['$scope', '$http', function($scope, $ht
       // Loaded into $scope.selection
       //
       $http.get('http://cricscore-api.appspot.com/csa?id=' + $scope.selection).then(function(resp) {
-        $scope.currentScore = resp.data; // the description
+        $scope.currentScore = resp.data[0].de; // the description
       });
     };
 

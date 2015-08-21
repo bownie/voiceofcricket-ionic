@@ -40,6 +40,7 @@
     <ion-side-menu-content>
       <ion-header-bar class="sidebar">
         <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
+        <div class="title">Voice of Cricket</div>
       </ion-header-bar>
       <ion-content class="background">
         <div class="input-label">
@@ -70,14 +71,12 @@
           <!--<select class="center picker app-font" name="singleSelect" ng-model="item" ng-change="matchSelected()">-->
             <!--<option ng-repeat="match in matches track by $index" value="{{match.id}}">{{match.t1}} vs {{match.t2}}</option>-->
 
-        <div class="center" ng-controller="NewController">
-          <select class="center picker app-font" ng-model="selection" name="selectedMatch" ng-change="change()" ng-options="match.id as (match.t1 + ' vs ' + match.t2) for match in matches">
+        <div class="center" ng-controller="MatchController">
+          <select class="picker" ng-model="selection" name="selectedMatch" ng-change="change()" ng-options="match.id as (match.t1 + ' vs ' + match.t2) for match in matches">
           <!--<select class="center picker app-font" ng-model="confirmed" name="selectedMatch" ng-change="change()" ng-options="match for match in matches">-->
           </select>
-          <tt>repeatSelect = {{data.selectedMatch}}</tt><br/>
-          <tt>debug = {{selection}}</tt><br/>
-          <tt>counter = {{counter}}</tt><br/>
-          <tt>{{currentScore}}</tt><br/>
+          </br>
+          <div class="score-text">{{currentScore}}</div>
         </div>
 
 <!--
@@ -120,25 +119,34 @@
     <!-- Left menu -->
     <ion-side-menu side="left" class="sidebar">
       <ion-header-bar class="sidebar">
-        <ul class="list">
-          <li class="item sidebar">
-            <div class="item range sidebar">
-              <label for="repeat-fader">Update frequency</label>
-              <input id="repeat-fader" type="range" name="repeat-time">
-              <output for="repeat-fader" id=volume>50</output>
+        <h2 class="title">Options</h2>
+      </ion-header-bar>
+      <ion-content>
+            <div class="sidebar-item">
+            Update frequency:</br>
             </div>
-
             <div class="item range sidebar">
-              Choose Accent:
+              <!--<label for="repeat-fader">Update frequency</label>-->
+              <input id="repeat-fader" type="range" name="repeat-time">
+              <!--<output for="repeat-fader" id=volume>50</output>-->
+            </div>
+            <br/>
+            <br/>
+            <div class="sidebar-item">
+              Choose Accent:</br>
               <select class="sidebar-picker">
                 <option selected>English</option>
                 <option>Australian</option>
                 <option>South African</option>
               </select>
             </div>
-          </li>
-      </ul>
-      </ion-header-bar>
+
+            <br/>
+            <br/>
+            <div class="sidebar-item">
+            Voice of Cricket by <a href="http://www.xyglo.com" target="_blank">Xyglo BV</a>.  API provided by CricScore:  http://cricscore-api.appspot.com
+            </div>
+      </ion-content>
     </ion-side-menu>
 
   </ion-side-menus>
