@@ -15,6 +15,9 @@
       var accentSelected = "en-GB"; 
     </script>
 
+    <!-- windows compatibility -->
+    <script type="text/javascript" src="js/winstore-jscompat.js"></script>
+
     <!-- speech synthesis -->
     <script type="text/javascript" src="lib/speech-synthesis/polyfill.min.js"></script>
 
@@ -44,7 +47,7 @@
     <ion-side-menu-content>
       <ion-header-bar class="sidebar">
         <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
-        <div class="title">Voice of Cricket</div>
+        <div class="title center">Voice of Cricket</div>
       </ion-header-bar>
       <ion-content class="background">
         <div class="input-label">
@@ -70,7 +73,7 @@
 
     <!-- Left menu -->
     <ion-side-menu side="left" class="sidebar">
-      <ion-header-bar class="sidebar">
+      <ion-header-bar class="sidebar-item">
         <h2 class="title">Options</h2>
       </ion-header-bar>
       <ion-content>
@@ -120,19 +123,35 @@
 
       <!-- Fetch the match and talk -->
       if (window.lastFetchedMatch != "") {
-        var fallbackSpeechSynthesis = window.getSpeechSynthesis();
-        var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
-
         // To use polyfill directly call
         // var fallbackSpeechSynthesis = window.speechSynthesisPolyfill;
         // var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill;
 
-        var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
-        u.lang = window.accentSelected;
-        u.volume = 1.0;
-        u.rate = 1.0;
-        u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-        fallbackSpeechSynthesis.speak(u);
+
+        if ('speechSynthesis' in window && window.nativeSpeechSynthesisSupport() == true) {
+          var msg = new SpeechSynthesisUtterance();
+          msg.lang = window.accentSelected;
+          msg.volume = 1.0;
+          msg.rate = 1.0;
+          msg.text = window.lastFetchedMatch;
+          msg.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+          speechSynthesis.speak(msg);
+
+          console.log("Native speech");
+
+        } else
+        {
+          var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+          var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+          var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
+          u.lang = window.accentSelected;
+          u.volume = 1.0;
+          u.rate = 1.0;
+          u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+          fallbackSpeechSynthesis.speak(u);
+
+          console.log("Fallback speech");
+        }
       }
 
     } else {
