@@ -1,80 +1,59 @@
 // Controlling to fetch matches from from the cricscore API
 //
-var matchModule = angular.module('matchesController', []);
+var matchModule = angular.module('matchesController', ['matchesServices']);
 
-matchModule.controller('voiceController', function ($scope, $http) {
+matchModule.controller('voiceController', function ($scope, $http, voiceService) {
   $scope.toggleButton = function() { 
     console.log("toggle button in controller");
 
     if (window.talkState == "stopped" ) {
 
-      document.getElementById("talk-button").src="img/StopButton.png";
-      window.talkState = "started";
+        document.getElementById("talk-button").src="img/StopButton.png";
+        window.talkState = "started";
 
-      // If we have a match to talk about
-      //
-      if (window.lastFetchedMatch != "") {
-        if (isAndroid || isiOS || isWinApp) {
-          TTS.speak({
-            text: window.lastFetchedMatch,
-            locale: window.accentSelected,
-            rate: 1.0
-          }, function () {
-             console.log('Speaking on Android');
-          }, function (reason) {
-             console.log('Failed to speak on Android');
-          });
-        // Else we try native synthesis platform agnostic
-        //
-        } else if ('speechSynthesis' in window && window.nativeSpeechSynthesisSupport() == true) {
-          var msg = new SpeechSynthesisUtterance();
-          msg.lang = window.accentSelected;
-          msg.volume = 1.0;
-          msg.rate = 1.0;
-          msg.text = window.lastFetchedMatch;
-          msg.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-          speechSynthesis.speak(msg);
+        if (window.timer == null) {
+          var count = 0;
+          window.timer = $.timer(function() {
 
-          console.log("Native speech");
+              // Wankers
+              //
+              count++;
 
-        } else { // Fallback scenario is to use the API
+              // If the timer exceeds the interval then we refetch
+              //
+              if (count > window.localStorage.getItem('updateInterval')) {
+                console.log("Timer completed in " + count + " seconds");
 
-            var fallbackSpeechSynthesis = window.getSpeechSynthesis();
-            var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
-            var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
-            u.lang = window.accentSelected;
-            u.volume = 1.0;
-            u.rate = 1.0;
-            u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-            fallbackSpeechSynthesis.speak(u);
-  
-            console.log("Fallback speech");
-         }
-       }
-     } else {
+                // Call speech service
+                //
+                voiceService.doSpeech();
+
+                // Reset counter but don't invalidate it
+                //
+                count = 0;
+              }
  
-      document.getElementById("talk-button").src="img/StartButton.png";
-      talkState = "stopped";
-
-      // For TTS say nothing
-      //
-      if (isAndroid || isiOS || isWinApp) {
-        TTS.speak({
-            text: "",
-            locale: window.accentSelected,
-            rate: 1.0
-          }, function () {
-             console.log('Speaking on Android');
-          }, function (reason) {
-             console.log('Failed to speak on Android');
-        });
+          });
+          window.timer.set({ time : 1000, autostart : true });
+        }
 
       } else {
-        var fallbackSpeechSynthesis = window.getSpeechSynthesis();
-        fallbackSpeechSynthesis.cancel();
+ 
+        document.getElementById("talk-button").src="img/StartButton.png";
+        talkState = "stopped";
+
+        // Invalidate timer
+        //
+        if (window.timer != null) {
+          window.timer.stop();
+          window.timer = null;
+        }
       }
+
+      // Now do some speech
+      //
+      voiceService.doSpeech();
     }
-  }
 });
 
 matchModule.controller('MatchesController', function ($scope, $http) {
@@ -124,7 +103,7 @@ matchModule.controller('MatchesController', function ($scope, $http) {
 });
 
 
-matchModule.controller('MatchController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+matchModule.controller('MatchController', function($scope, $http, $window, voiceService, fetchService) {
 
     $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
 
@@ -148,7 +127,11 @@ matchModule.controller('MatchController', ['$scope', '$http', '$window', functio
       // Loaded into $scope.selection
       //
       $http.get('http://cricscore-api.appspot.com/csa?id=' + $scope.selection).then(function(resp) {
-        $scope.currentScore = resp.data[0].de; // the description
+
+        // Convert the description
+        //
+        var rS = resp.data[0].de;
+        $scope.currentScore = rS;
 
         // Always store the last fetch
         //
@@ -157,24 +140,22 @@ matchModule.controller('MatchController', ['$scope', '$http', '$window', functio
         // Check to see if we play it straight away
         //
         if (window.talkState == "started") {
-          //alert("Say this "+ $scope.currentScore);
 
-          // store in last fetch
-          // 
-          var fallbackSpeechSynthesis = window.getSpeechSynthesis();
-          var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
-          var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
-          u.lang = 'en-GB';
-          u.volume = 1.0;
-          u.rate = 1.0;
-          u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-          fallbackSpeechSynthesis.speak(u);
+          // Invalidate timer, stop talking and refetch
+          //
+          if (window.timer != null) { 
+            //voiceService.doSpeech("");
+            window.timer.stop();
+            window.timer = null;
+          }
 
+          console.log("Do speech again");
+          voiceService.doSpeech();
         }
       });
     };
 
-}]);
+});
 
 
 matchModule.controller('TestController', ['$scope', function($scope) {
@@ -188,12 +169,8 @@ matchModule.controller('updateIntervalController', ['$scope', '$filter', functio
   $scope.data = {};
 
   if (window.localStorage.getItem('updateInterval') == null) {
-  
     $scope.data.updateInterval = 30;
     window.localStorage.setItem('updateInterval', $scope.data.updateInterval);
-
-    //alert("Defaulting update interval to 30");
-
   } 
 
   // Now always fetch
@@ -203,8 +180,6 @@ matchModule.controller('updateIntervalController', ['$scope', '$filter', functio
   $scope.data.updateInterval = window.localStorage.getItem('updateInterval');
   $scope.data.formattedInterval = "1 min";
  
-  //alert("Fetched update interval = " + $scope.data.updateInterval);
-
   $scope.formatInterval = function() {
     
     if ($scope.data.updateInterval == 30) {
@@ -227,18 +202,11 @@ matchModule.controller('updateIntervalController', ['$scope', '$filter', functio
 
     return window.localStorage.setItem('updateInterval', $scope.data.updateInterval);
 
-    //alert("Set update interval to " + window.localStorage.getItem('updateInterval'));
   }
 
   // Always format the interval
   //
   $scope.formatInterval();
-
-  //var fader = document.getElementById('repeat-fader');
-  //if (fader != null) {
-    //fader.value = $scope.data.updateInterval;
-    //alert('Fader set to ' + $scope.data.updateInterval);
-  //} 
 
 }]);
 

@@ -16,6 +16,11 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
+
+  <!-- background enable this app -->
+  <preference name="KeepRunning" value="true"/> 
+  <preference name="exit-on-suspend" value="false"/> 
+
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
@@ -40,4 +45,5 @@
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
   <plugin name="TTS" value="com.wordsbaking.cordova.tts"/>
+
 </widget>

@@ -28,6 +28,11 @@
       var lastFetchedMatch = ""; 
       var accentSelected = "en-GB"; 
 
+      // Timer last fetch
+      //
+      var timer;
+      var lastFetchTime = 0;
+
     </script>
 
     <!-- windows compatibility -->
@@ -42,15 +47,19 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <!--<script src="lib/ionic/js/angular/angular-resource.min.js"></script>-->
+    <script src="lib/angular-resource/angular-resource.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
-    <!--<script src="js/services.js"></script>-->
+    <script src="js/services.js"></script>
     <script src="js/controllers.js"></script>
+
+    <!-- timer -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.timer.js"></script>
 
   </head>
   <!--<body ng-app="voiceOfCricket" ng-controller="MatchesController">-->
