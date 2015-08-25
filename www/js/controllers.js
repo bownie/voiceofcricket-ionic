@@ -2,6 +2,81 @@
 //
 var matchModule = angular.module('matchesController', []);
 
+matchModule.controller('voiceController', function ($scope, $http) {
+  $scope.toggleButton = function() { 
+    console.log("toggle button in controller");
+
+    if (window.talkState == "stopped" ) {
+
+      document.getElementById("talk-button").src="img/StopButton.png";
+      window.talkState = "started";
+
+      // If we have a match to talk about
+      //
+      if (window.lastFetchedMatch != "") {
+        if (isAndroid || isiOS || isWinApp) {
+          TTS.speak({
+            text: window.lastFetchedMatch,
+            locale: window.accentSelected,
+            rate: 1.0
+          }, function () {
+             console.log('Speaking on Android');
+          }, function (reason) {
+             console.log('Failed to speak on Android');
+          });
+        // Else we try native synthesis platform agnostic
+        //
+        } else if ('speechSynthesis' in window && window.nativeSpeechSynthesisSupport() == true) {
+          var msg = new SpeechSynthesisUtterance();
+          msg.lang = window.accentSelected;
+          msg.volume = 1.0;
+          msg.rate = 1.0;
+          msg.text = window.lastFetchedMatch;
+          msg.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+          speechSynthesis.speak(msg);
+
+          console.log("Native speech");
+
+        } else { // Fallback scenario is to use the API
+
+            var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+            var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+            var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
+            u.lang = window.accentSelected;
+            u.volume = 1.0;
+            u.rate = 1.0;
+            u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+            fallbackSpeechSynthesis.speak(u);
+  
+            console.log("Fallback speech");
+         }
+       }
+     } else {
+ 
+      document.getElementById("talk-button").src="img/StartButton.png";
+      talkState = "stopped";
+
+      // For TTS say nothing
+      //
+      if (isAndroid || isiOS || isWinApp) {
+        TTS.speak({
+            text: "",
+            locale: window.accentSelected,
+            rate: 1.0
+          }, function () {
+             console.log('Speaking on Android');
+          }, function (reason) {
+             console.log('Failed to speak on Android');
+        });
+
+      } else {
+        var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+        fallbackSpeechSynthesis.cancel();
+      }
+    }
+  }
+});
+
 matchModule.controller('MatchesController', function ($scope, $http) {
 
     $scope.showSelectValue = function() {
@@ -81,7 +156,7 @@ matchModule.controller('MatchController', ['$scope', '$http', '$window', functio
 
         // Check to see if we play it straight away
         //
-        if ($window.talkState == "started") {
+        if (window.talkState == "started") {
           //alert("Say this "+ $scope.currentScore);
 
           // store in last fetch
