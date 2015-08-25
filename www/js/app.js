@@ -26,6 +26,35 @@ app.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
 
+    if(AdMob) {
+
+      var admobid = {};
+      if( /(android)/i.test(navigator.userAgent) ) { // for android
+          admobid = {
+              banner: 'ca-app-pub-1421059894749418/2370395482', // or DFP format "/6253334/dfp_example_ad"
+              interstitial: 'ca-app-pub-1421059894749418/2370395482'
+          };
+      } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) { // for ios
+          admobid = {
+              banner: 'ca-app-pub-1421059894749418/8416929089', // or DFP format "/6253334/dfp_example_ad"
+              interstitial: 'ca-app-pub-1421059894749418/8416929089'
+          };
+      } else { // for windows phone
+          admobid = {
+              banner: 'ca-app-pub-1421059894749418/8416929089', // or DFP format "/6253334/dfp_example_ad"
+              interstitial: 'ca-app-pub-1421059894749418/8416929089'
+          };
+      }
+
+      // Launch the banner
+      //
+      AdMob.createBanner( {
+        adId: admobid.banner, 
+        position: AdMob.AD_POSITION.TOP_CENTER, 
+        autoShow: true } );
+
+    }
+
   });
 })
 

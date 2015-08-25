@@ -116,7 +116,7 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
 
       // err.status will contain the status code
       //
-      //error('ERR', err);
+      console.log('ERR = ' + err);
     })
 
     $scope.counter = 0;
@@ -131,6 +131,45 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
         // Convert the description
         //
         var rS = resp.data[0].de;
+
+        // Substitute 'for' for '/'
+        //
+        rS = rS.replace(/\//gi, " for ");
+        
+        // Substitute 'overs' for 'ov'
+        //
+        rS = rS.replace(/ ov /gi, " overs ");
+
+        // Substituse 'overs' for 'ov,'
+        //
+        rS = rS.replace(/ ov,/gi, " overs, ");
+        
+        // 'for 0' goes to 'for none'
+        //
+        rS = rS.replace(/for 0/gi, "for none");
+        
+        // ' 0 for' goes to ' none for'
+        //
+        rS = rS.replace(/ 0 for/gi, " none for");
+
+        // Let's convert some shortened counties
+        //
+        rS = rS.replace(/Aus /gi, "Australia ");
+        rS = rS.replace(/Eng /gi, "England ");
+        rS = rS.replace(/SL /gi, "Sri Lanka ");
+        rS = rS.replace(/NZ /gi, "New Zealand ");
+        rS = rS.replace(/SA /gi, "South Africa ");
+        rS = rS.replace(/Ind /gi, "India ");
+        rS = rS.replace(/Pak /gi, "Pakistan ");
+        rS = rS.replace(/WI /gi, "West Indies ");
+        rS = rS.replace(/Ned /gi, "Netherlands ");
+
+        // Not out
+        //
+        rS = rS.replace(/\*/gi, " not out ");
+
+        // Current score
+        //
         $scope.currentScore = rS;
 
         // Always store the last fetch
