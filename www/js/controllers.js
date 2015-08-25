@@ -115,17 +115,20 @@ matchModule.controller('updateIntervalController', ['$scope', '$filter', functio
   if (window.localStorage.getItem('updateInterval') == null) {
   
     $scope.data.updateInterval = 30;
+    window.localStorage.setItem('updateInterval', $scope.data.updateInterval);
 
-  } else {
+    //alert("Defaulting update interval to 30");
 
-    $scope.data.updateInterval = window.localStorage.getItem('updateInterval');
+  } 
 
-  }
- 
-  $scope.data.updateInterval = 60;
+  // Now always fetch
+  //
   $scope.data.minRange = 30;
   $scope.data.maxRange = 600;
+  $scope.data.updateInterval = window.localStorage.getItem('updateInterval');
   $scope.data.formattedInterval = "1 min";
+ 
+  //alert("Fetched update interval = " + $scope.data.updateInterval);
 
   $scope.formatInterval = function() {
     
@@ -148,13 +151,36 @@ matchModule.controller('updateIntervalController', ['$scope', '$filter', functio
     }
 
     return window.localStorage.setItem('updateInterval', $scope.data.updateInterval);
+
+    //alert("Set update interval to " + window.localStorage.getItem('updateInterval'));
   }
+
+  // Always format the interval
+  //
+  $scope.formatInterval();
+
+  //var fader = document.getElementById('repeat-fader');
+  //if (fader != null) {
+    //fader.value = $scope.data.updateInterval;
+    //alert('Fader set to ' + $scope.data.updateInterval);
+  //} 
+
 }]);
 
 matchModule.controller('accentController', ['$scope', '$filter', function($scope, $filter) {
   $scope.data = {};
   
-  $scope.data.accent = "English";
+  // Check for default
+  //
+  if (window.localStorage.getItem('accent') == null) {
+    $scope.data.accent = "English";
+    window.localStorage.setItem('accent', $scope.data.accent);
+  }
+
+  // Fetch
+  //
+  $scope.data.accent = window.localStorage.getItem('accent');
+  //alert('Got accent = ' + $scope.data.accent);
 
   $scope.changeAccent = function() {
 
@@ -169,7 +195,11 @@ matchModule.controller('accentController', ['$scope', '$filter', function($scope
     } else {
       alert("Can't change accent to " + $scope.data.accent);
     }
+    return window.localStorage.setItem('accent', $scope.data.accent);
   }
 
+  // Always set the accentSelected value based on dropdown
+  //
+  $scope.changeAccent();
 }]);
 

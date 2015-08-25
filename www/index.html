@@ -10,6 +10,19 @@
 
     <!-- Globals -->
     <script type='text/javascript'> 
+
+      function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
+      }
+
+      function onDeviceReady() {
+        // Device is ready
+        console.log("Device ready");
+      }
+
+      var isAndroid = /Android|\bSilk\b/.test( navigator.userAgent );
+      var isiOS = /iP(ad|hone|od)/.test( navigator.userAgent );
+      var isWinApp = /MSAppHost/.test( navigator.userAgent );
       var talkState = "stopped"; 
       var lastFetchedMatch = ""; 
       var accentSelected = "en-GB"; 
@@ -39,7 +52,7 @@
 
   </head>
   <!--<body ng-app="voiceOfCricket" ng-controller="MatchesController">-->
-  <body ng-app="voiceOfCricket">
+  <body ng-app="voiceOfCricket" onload="onLoad()">
 
   <ion-side-menus>
 
@@ -64,7 +77,7 @@
 
       <ion-footer-bar>
         <div class="image-wrapper center">
-        <button class="image-wrapper" onclick="toggleButton()">
+        <button class="image-wrapper" ontouchend="toggleButton()" onclick="toggleButton()">
           <img id="talk-button" src="img/StartButton.png">
         </button>
         </div>
@@ -84,7 +97,7 @@
             <div class="item range sidebar">
               <!--<label for="repeat-fader">Update frequency</label>-->
               30secs
-              <input id="repeat-fader" type="range" name="repeat-time" min={{data.minRange}} max={{data.maxRange}} value="{{data.updateInterval}}" ng-change="formatInterval()" ng-model="data.updateInterval">
+              <input id="repeat-fader" type="range" name="repeat-time" ng-model="data.updateInterval" min={{data.minRange}} max={{data.maxRange}} ng-change="formatInterval()">
               10mins
               <!--<output for="repeat-fader" id=volume>50</output>-->
             </div>
@@ -121,14 +134,53 @@
       document.getElementById("talk-button").src="img/StopButton.png";
       talkState = "started";
 
-      <!-- Fetch the match and talk -->
+      // If we have a match to talk about
+      //
       if (window.lastFetchedMatch != "") {
         // To use polyfill directly call
         // var fallbackSpeechSynthesis = window.speechSynthesisPolyfill;
         // var fallbackSpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill;
 
+        if (isAndroid || isiOS || isWinApp) {
 
-        if ('speechSynthesis' in window && window.nativeSpeechSynthesisSupport() == true) {
+/*
+          console.log("Android speech");
+
+          navigator.tts.startup(startupWin, fail);
+          function startupWin(result) {
+              console.log("Startup win");
+              // When result is equal to STARTED we are ready to play
+              console.log("Result "+result);
+              //TTS.STARTED==2 use this once so is answered
+              if (result == 2) {
+                  navigator.tts.getLanguage(win, fail);
+              }
+          }                               
+
+          function win(result) {
+            console.log(result);
+          }
+      
+          function fail(result) {
+            console.log("Error = " + result);
+          }
+
+          
+          navigator.tts.speak(window.lastFetchedMatch);
+*/
+          TTS.speak({
+            text: window.lastFetchedMatch,
+            locale: window.accentSelected,
+            rate: 1.0
+          }, function () {
+             console.log('Speaking on Android');
+          }, function (reason) {
+             console.log('Failed to speak on Android');
+          });
+
+        // Else we try native synthesis platform agnostic
+        //
+        } else if ('speechSynthesis' in window && window.nativeSpeechSynthesisSupport() == true) {
           var msg = new SpeechSynthesisUtterance();
           msg.lang = window.accentSelected;
           msg.volume = 1.0;
@@ -139,21 +191,20 @@
 
           console.log("Native speech");
 
-        } else
-        {
-          var fallbackSpeechSynthesis = window.getSpeechSynthesis();
-          var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
-          var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
-          u.lang = window.accentSelected;
-          u.volume = 1.0;
-          u.rate = 1.0;
-          u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
-          fallbackSpeechSynthesis.speak(u);
+        } else { // Fallback scenario is to use the API
 
-          console.log("Fallback speech");
+            var fallbackSpeechSynthesis = window.getSpeechSynthesis();
+            var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
+            var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
+            u.lang = window.accentSelected;
+            u.volume = 1.0;
+            u.rate = 1.0;
+            u.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
+            fallbackSpeechSynthesis.speak(u);
+  
+            console.log("Fallback speech");
         }
       }
-
     } else {
   
       document.getElementById("talk-button").src="img/StartButton.png";
@@ -170,6 +221,7 @@
   function matchSelected(key) {
     console("matchSelected = " + key);
   }
+
   </script>
 
 
