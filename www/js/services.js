@@ -23,12 +23,66 @@ module.service('fetchMatchService', function($scope) {
 });
 
 
-// Interpret a score string into something we can say correctly
+// Interpret a score string into something we can say correctly - need a promise on this
 //
-module.factory('fetchService', function($resource) {
+module.factory('fetchService', function($resource, $http, $rootScope, $q) {
+
   return {
-    getMatch : function() {
-      console.log("Do something");
+    getMatch : function(selection) {
+
+      // Loaded into $scope.selection
+      //
+      $http.get('http://cricscore-api.appspot.com/csa?id=' + selection).then(function(resp) {
+
+        // Convert the description
+        //
+        var rS = resp.data[0].de;
+
+        // Substitute 'for' for '/'
+        //
+        rS = rS.replace(/\//gi, " for ");
+
+        // Substitute 'overs' for 'ov'
+        //
+        rS = rS.replace(/ ov /gi, " overs ");
+
+        // Substituse 'overs' for 'ov,'
+        //
+        rS = rS.replace(/ ov,/gi, " overs, ");
+
+        // 'for 0' goes to 'for none'
+        //
+        rS = rS.replace(/for 0/gi, "for none");
+
+        // ' 0 for' goes to ' none for'
+        //
+        rS = rS.replace(/ 0 for/gi, " none for");
+
+        // Let's convert some shortened counties
+        //
+        rS = rS.replace(/Aus /gi, "Australia ");
+        rS = rS.replace(/Eng /gi, "England ");
+        rS = rS.replace(/SL /gi, "Sri Lanka ");
+        rS = rS.replace(/NZ /gi, "New Zealand ");
+        rS = rS.replace(/SA /gi, "South Africa ");
+        rS = rS.replace(/Ind /gi, "India ");
+        rS = rS.replace(/Pak /gi, "Pakistan ");
+        rS = rS.replace(/WI /gi, "West Indies ");
+        rS = rS.replace(/Ned /gi, "Netherlands ");
+
+        // Not out
+        //
+        rS = rS.replace(/\*/gi, " not out ");
+
+        // Always store the last fetch
+        //
+        //window.lastFetchedMatch = rS;
+        //$rootScope.currentScore = rS;
+        //$rootScope.apply();
+        
+        //alert(rS);
+        return(rS);
+      });
     }
   }
 });

@@ -103,7 +103,7 @@ matchModule.controller('MatchesController', function ($scope, $http) {
 });
 
 
-matchModule.controller('MatchController', function($scope, $http, $window, voiceService, fetchService) {
+matchModule.controller('MatchController', function($scope, $http, $window, voiceService, fetchService, $q) {
 
     $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
 
@@ -171,6 +171,12 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
         // Current score
         //
         $scope.currentScore = rS;
+/*
+        fetchService.getMatch($scope.selection).then(function(result) {
+          alert(result);
+          $scope.currentScore = result;
+        });
+*/
 
         // Always store the last fetch
         //
