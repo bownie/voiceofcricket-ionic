@@ -27,6 +27,7 @@
       var talkState = "stopped"; 
       var lastFetchedMatch = ""; 
       var accentSelected = "en-GB"; 
+      var matchIdSelected = 0; // we need to store this between fetches
 
       // Timer last fetch
       //
@@ -107,7 +108,7 @@
             </div>
             <div class="item range sidebar">
               30secs
-              <input id="repeat-fader" type="range" name="repeat-time" ng-model="data.updateInterval" min={{data.minRange}} max={{data.maxRange}} ng-change="formatInterval()">
+              <input id="repeat-fader" type="range" step="data.step" name="repeat-time" ng-model="data.updateInterval" min="30" max="600" ng-change="formatInterval()">
               10mins
             </div>
             <div class="siderbar-item center">

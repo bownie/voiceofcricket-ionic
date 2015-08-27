@@ -2,7 +2,7 @@
 //
 var matchModule = angular.module('matchesController', ['matchesServices']);
 
-matchModule.controller('voiceController', function ($scope, $http, voiceService) {
+matchModule.controller('voiceController', function ($scope, $http, voiceService, fetchService) {
   $scope.toggleButton = function() { 
     console.log("toggle button in controller");
 
@@ -24,13 +24,36 @@ matchModule.controller('voiceController', function ($scope, $http, voiceService)
               if (count > window.localStorage.getItem('updateInterval')) {
                 console.log("Timer completed in " + count + " seconds");
 
-                // Call speech service
+                // Fetch score again
                 //
-                voiceService.doSpeech();
+                var myDataPromise = fetchService.getMatch(window.matchIdSelected);
 
-                // Reset counter but don't invalidate it
+                // This is only run after $http completes
                 //
-                count = 0;
+                myDataPromise.then(function(result) {
+  
+                  // Always store the last fetch
+                  //
+                  $scope.currentScore = result;
+                  window.lastFetchedMatch = $scope.currentScore;
+
+                  // Check to see if we play it straight away
+                  //
+                  if (window.talkState == "started") {
+        
+                    // Invalidate timer, stop talking and refetch
+                    //
+                    if (window.timer != null) { 
+                      window.timer.stop();
+                      window.timer = null;
+                    }
+
+                    voiceService.doSpeech();
+                    // Reset counter but don't invalidate it
+                    //
+                    count = 0;
+                  }
+                });
               }
  
           });
@@ -124,62 +147,16 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
     $scope.selection = 0;
     $scope.change = function(id) {
 
-      // Loaded into $scope.selection
+      // Store the selected match id
       //
-      $http.get('http://cricscore-api.appspot.com/csa?id=' + $scope.selection).then(function(resp) {
+      window.matchIdSelected = $scope.selection;
 
-        // Convert the description
-        //
-        var rS = resp.data[0].de;
-
-        // Substitute 'for' for '/'
-        //
-        rS = rS.replace(/\//gi, " for ");
-        
-        // Substitute 'overs' for 'ov'
-        //
-        rS = rS.replace(/ ov /gi, " overs ");
-
-        // Substituse 'overs' for 'ov,'
-        //
-        rS = rS.replace(/ ov,/gi, " overs, ");
-        
-        // 'for 0' goes to 'for none'
-        //
-        rS = rS.replace(/for 0/gi, "for none");
-        
-        // ' 0 for' goes to ' none for'
-        //
-        rS = rS.replace(/ 0 for/gi, " none for");
-
-        // Let's convert some shortened counties
-        //
-        rS = rS.replace(/Aus /gi, "Australia ");
-        rS = rS.replace(/Eng /gi, "England ");
-        rS = rS.replace(/SL /gi, "Sri Lanka ");
-        rS = rS.replace(/NZ /gi, "New Zealand ");
-        rS = rS.replace(/SA /gi, "South Africa ");
-        rS = rS.replace(/Ind /gi, "India ");
-        rS = rS.replace(/Pak /gi, "Pakistan ");
-        rS = rS.replace(/WI /gi, "West Indies ");
-        rS = rS.replace(/Ned /gi, "Netherlands ");
-
-        // Not out
-        //
-        rS = rS.replace(/\*/gi, " not out ");
-
-        // Current score
-        //
-        $scope.currentScore = rS;
-/*
-        fetchService.getMatch($scope.selection).then(function(result) {
-          alert(result);
-          $scope.currentScore = result;
-        });
-*/
+      var myDataPromise = fetchService.getMatch($scope.selection);
+      myDataPromise.then(function(result) {  // this is only run after $http completes
 
         // Always store the last fetch
         //
+        $scope.currentScore = result;
         window.lastFetchedMatch = $scope.currentScore;
 
         // Check to see if we play it straight away
@@ -189,17 +166,14 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
           // Invalidate timer, stop talking and refetch
           //
           if (window.timer != null) { 
-            //voiceService.doSpeech("");
             window.timer.stop();
             window.timer = null;
           }
 
-          console.log("Do speech again");
           voiceService.doSpeech();
         }
       });
     };
-
 });
 
 
@@ -222,6 +196,7 @@ matchModule.controller('updateIntervalController', ['$scope', '$filter', functio
   //
   $scope.data.minRange = 30;
   $scope.data.maxRange = 600;
+  $scope.data.step = 1;
   $scope.data.updateInterval = window.localStorage.getItem('updateInterval');
   $scope.data.formattedInterval = "1 min";
  

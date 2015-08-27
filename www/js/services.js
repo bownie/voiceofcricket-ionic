@@ -27,12 +27,12 @@ module.service('fetchMatchService', function($scope) {
 //
 module.factory('fetchService', function($resource, $http, $rootScope, $q) {
 
-  return {
-    getMatch : function(selection) {
+  
+  var getMatch = function(selection) {
 
       // Loaded into $scope.selection
       //
-      $http.get('http://cricscore-api.appspot.com/csa?id=' + selection).then(function(resp) {
+      return $http.get('http://cricscore-api.appspot.com/csa?id=' + selection).then(function(resp) {
 
         // Convert the description
         //
@@ -84,7 +84,8 @@ module.factory('fetchService', function($resource, $http, $rootScope, $q) {
         return(rS);
       });
     }
-  }
+
+    return { getMatch: getMatch };
 });
 
 
@@ -100,7 +101,7 @@ module.factory('voiceService', function($resource) {
         // If we have a match to talk about
         //
         if (window.lastFetchedMatch != "") {
-          if (isAndroid || isiOS || isWinApp) {
+          if (window.isAndroid || window.isiOS || window.isWinApp) {
             TTS.speak({
               text: window.lastFetchedMatch,
               locale: window.accentSelected,
@@ -142,11 +143,12 @@ module.factory('voiceService', function($resource) {
   
         // For TTS say nothing
         //
-        if (isAndroid || isiOS || isWinApp) {
-          TTS.speak({
-              text: "",
-              locale: window.accentSelected,
-              rate: 1.0
+        if (window.isAndroid || window.isiOS || window.isWinApp) {
+
+            TTS.speak({
+                text: "",
+                locale: window.accentSelected,
+                rate: 1.0
             }, function () {
                console.log('Speaking on Android');
             }, function (reason) {
