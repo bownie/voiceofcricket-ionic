@@ -32,7 +32,7 @@ module.factory('fetchService', function($resource, $http, $rootScope, $q) {
 
       // Loaded into $scope.selection
       //
-      return $http.get('http://cricscore-api.appspot.com/csa?id=' + selection).then(function(resp) {
+      return $http.get('http://xyglo.com:1337/cricscore-api.appspot.com/csa?id=' + selection).then(function(resp) {
 
         // Convert the description
         //
@@ -127,6 +127,7 @@ module.factory('voiceService', function($resource) {
 
           } else { // Fallback scenario is to use the API
 
+/*
               var fallbackSpeechSynthesis = window.getSpeechSynthesis();
               var fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance();
               var u = new fallbackSpeechSynthesisUtterance(window.lastFetchedMatch);
@@ -137,6 +138,8 @@ module.factory('voiceService', function($resource) {
               fallbackSpeechSynthesis.speak(u);
   
               console.log("Fallback speech");
+*/
+              alert("Speech synthesis is not available");
             }
           }
         } else {

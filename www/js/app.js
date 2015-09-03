@@ -55,6 +55,22 @@ app.run(function($ionicPlatform) {
 
     }
 
+      var customLocale = {};
+      customLocale.title = "Rate %@";
+      customLocale.message = "Would you mind taking a moment to rate %@? It won’t take more than a minute. Thanks for your support!";
+      customLocale.cancelButtonLabel = "No, Thanks";
+      customLocale.laterButtonLabel = "Remind Me Later";
+      customLocale.rateButtonLabel = "Rate It Now";
+
+      AppRate.preferences.customLocale = customLocale;
+      AppRate.preferences.usesUntilPrompt = 1;
+      AppRate.preferences.promptAgainForEachNewVersion = true;
+      AppRate.preferences.storeAppURL.ios = '1020598694';
+      AppRate.preferences.storeAppURL.android = 'market://details?id=com.ionicframework.voiceofcricketionic875888';
+
+
+    AppRate.promptForRating(true);
+
   });
 })
 

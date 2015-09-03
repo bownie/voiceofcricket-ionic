@@ -91,7 +91,7 @@
 /* Match picker */
 .picker {
   width: 80%;
-  background-color: transparent;
+  background-color: #33cc33;
   font-size: 150%;
   text-align: center;
 }
@@ -123,4 +123,11 @@
   background-color:transparent !important;
   background-image: none !important;
   border:0px !important;
+}
+
+.appbutton {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 30%;
+  margin-bottom: 30%;
 }

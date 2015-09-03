@@ -128,7 +128,7 @@ matchModule.controller('MatchesController', function ($scope, $http) {
 
 matchModule.controller('MatchController', function($scope, $http, $window, voiceService, fetchService, $q) {
 
-    $http.get('http://cricscore-api.appspot.com/csa').then(function(resp) {
+    $http.get('http://xyglo.com:1337/cricscore-api.appspot.com/csa').then(function(resp) {
 
       // For JSON responses, resp.data contains the result
       //
