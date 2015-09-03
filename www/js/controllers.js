@@ -143,7 +143,7 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
     })
 
     $scope.counter = 0;
-    $scope.currentScore = "<nothing fetched>";
+    $scope.currentScore = "Select a match from the menu above>";
     $scope.selection = 0;
     $scope.change = function(id) {
 

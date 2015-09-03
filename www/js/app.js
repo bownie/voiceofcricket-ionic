@@ -55,9 +55,10 @@ app.run(function($ionicPlatform) {
 
     }
 
+    if (isAndroid) {
       var customLocale = {};
-      customLocale.title = "Rate %@";
-      customLocale.message = "Would you mind taking a moment to rate %@? It won’t take more than a minute. Thanks for your support!";
+      customLocale.title = "Rate Voice of Cricket";
+      customLocale.message = "Love the Voice of Cricket? Then rate it! Many thanks for your support";
       customLocale.cancelButtonLabel = "No, Thanks";
       customLocale.laterButtonLabel = "Remind Me Later";
       customLocale.rateButtonLabel = "Rate It Now";
@@ -65,11 +66,12 @@ app.run(function($ionicPlatform) {
       AppRate.preferences.customLocale = customLocale;
       AppRate.preferences.usesUntilPrompt = 1;
       AppRate.preferences.promptAgainForEachNewVersion = true;
-      AppRate.preferences.storeAppURL.ios = '1020598694';
+      AppRate.preferences.useLanguage = 'en';
+      //AppRate.preferences.storeAppURL.ios = '1020598694';
       AppRate.preferences.storeAppURL.android = 'market://details?id=com.ionicframework.voiceofcricketionic875888';
 
-
-    AppRate.promptForRating(true);
+      AppRate.promptForRating(true);
+    }
 
   });
 })
