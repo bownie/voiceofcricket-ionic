@@ -1,4 +1,4 @@
-var module = angular.module('matchesServices', ['ngResource']);
+﻿var module = angular.module('matchesServices', ['ngResource']);
 
 module.factory('cricketMatches', function ($resource) {
 
@@ -101,7 +101,20 @@ module.factory('voiceService', function($resource) {
         // If we have a match to talk about
         //
         if (window.lastFetchedMatch != "") {
-          if (window.isAndroid || window.isiOS || window.isWinApp) {
+            if (window.isWinApp) {
+                console.log("Speaking on WinApp");
+
+                TTS.speak({
+                    text: window.lastFetchedMatch,
+                    locale: window.accentSelected,
+                    rate: 1.0
+                }, function () {
+                    console.log('Speaking on WinApp');
+                }, function (reason) {
+                    console.log('Failed to speak on WinApp');
+                });
+
+            } else if (window.isAndroid || window.isiOS) {
             TTS.speak({
               text: window.lastFetchedMatch,
               locale: window.accentSelected,
@@ -145,8 +158,21 @@ module.factory('voiceService', function($resource) {
         } else {
   
         // For TTS say nothing
-        //
-        if (window.isAndroid || window.isiOS || window.isWinApp) {
+          //
+          if (window.isWinApp) {
+              console.log("Stopping speaking on WinApp");
+
+              TTS.speak({
+                  text: "",
+                  locale: window.accentSelected,
+                  rate: 1.0
+              }, function () {
+                  console.log('Speaking on WinApp');
+              }, function (reason) {
+                  console.log('Failed to speak on WinApp');
+              });
+
+          } else if (window.isAndroid || window.isiOS ) {
 
             TTS.speak({
                 text: "",

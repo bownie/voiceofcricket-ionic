@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>Voice of Cricket</title>
@@ -9,7 +9,8 @@
     <link href="css/style.css" rel="stylesheet">
 
     <!-- Globals -->
-    <script type='text/javascript'> 
+    <script type='text/javascript'>
+
 
       function onLoad() {
         document.addEventListener("deviceready", onDeviceReady, false);
@@ -24,9 +25,9 @@
       var isiOS = /iP(ad|hone|od)/.test( navigator.userAgent );
       var isWinApp = /MSAppHost/.test( navigator.userAgent );
 
-      var talkState = "stopped"; 
-      var lastFetchedMatch = ""; 
-      var accentSelected = "en-GB"; 
+      var talkState = "stopped";
+      var lastFetchedMatch = "";
+      var accentSelected = "en-GB";
       var matchIdSelected = 0; // we need to store this between fetches
 
       // Timer last fetch
@@ -63,7 +64,6 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <script src="lib/angular-resource/angular-resource.min.js"></script>
@@ -80,79 +80,73 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.timer.js"></script>
 
-  </head>
-  <!--<body ng-app="voiceOfCricket" ng-controller="MatchesController">-->
-  <body ng-app="voiceOfCricket" onload="onLoad()">
+</head>
+<!--<body ng-app="voiceOfCricket" ng-controller="MatchesController" class="platform-windows platform-cordova platform-webview">-->
+<body ng-app="voiceOfCricket" onload="onLoad()">
 
-  <ion-side-menus>
+    <ion-side-menus>
 
-    <!-- Center content -->
-    <ion-side-menu-content>
-      <ion-header-bar class="sidebar">
-        <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
-        <div class="title center">Voice of Cricket</div>
-      </ion-header-bar>
-      <ion-content class="background">
-        <div class="input-label">
-          &nbsp;
-        </div>
+        <!-- Center content -->
+        <ion-side-menu-content>
+            <ion-header-bar class="sidebar">
+                <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
+                <div class="title center">Voice of Cricket</div>
+            </ion-header-bar>
+            <ion-content class="background">
+                <div class="input-label">
+                    &nbsp;
+                </div>
 
-        <div class="center" ng-controller="MatchController">
-          <select data-tap-disabled="true" class="picker" ng-model="selection" name="selectedMatch" ng-change="change()" ng-options="match.id as (match.t1 + ' vs ' + match.t2) for match in matches">
-          </select>
-          </br>
-          <div class="score-text">{{currentScore}}</div>
-        </div>
-      </ion-content>
+                <div class="center" ng-controller="MatchController">
+                    <select data-tap-disabled="true" class="picker" ng-model="selection" name="selectedMatch" ng-change="change()" ng-options="match.id as (match.t1 + ' vs ' + match.t2) for match in matches"></select>
+                    <div class="score-text">{{currentScore}}</div>
+                </div>
+            </ion-content>
 
-      <ion-footer-bar class="no-line">
-        <!--<div class="center" ng-controller="voiceController">-->
-          <button class="center image-wrapper" ng-click="toggleButton()" ng-controller="voiceController">
-            <img id="talk-button" src="img/StartButton.png" border="0">
-          </button>
-        <!--</div>-->
-      </ion-footer-bar>
-    </ion-side-menu-content>
+            <ion-footer-bar class="no-line">
+                <!--<div class="center" ng-controller="voiceController">-->
+                <button class="center image-wrapper" ng-click="toggleButton()" ng-controller="voiceController">
+                    <img id="talk-button" src="img/StartButton.png" border="0">
+                </button>
+                <!--</div>-->
+            </ion-footer-bar>
+        </ion-side-menu-content>
 
-    <!-- Left menu -->
-    <ion-side-menu side="left" class="sidebar">
-      <ion-header-bar class="sidebar-item">
-        <h2 class="title center">Options</h2>
-      </ion-header-bar>
-      <ion-content>
-            <div ng-controller="updateIntervalController">
-            <div class="sidebar-item">
-            Update frequency:</br>
-            </div>
-            <div class="item range sidebar">
-              30secs
-              <input id="repeat-fader" type="range" step="data.step" name="repeat-time" ng-model="data.updateInterval" min="30" max="600" ng-change="formatInterval()">
-              10mins
-            </div>
-            <div class="siderbar-item center">
-            {{data.formattedInterval}}
-            </div>
-            </div>
-            <br/>
-            <br/>
-            <div class="sidebar-item" ng-controller="accentController">
-              Choose Accent:</br>
-              <select data-tap-disabled="true" class="sidebar-picker" ng-model="data.accent" ng-change="changeAccent()">
-                <option>Australian</option>
-                <option>American</option>
-                <option selected>English</option>
-                <option>South African</option>
-              </select>
-            </div>
+        <!-- Left menu -->
+        <ion-side-menu side="left" class="sidebar">
+            <ion-header-bar class="sidebar-item">
+                <h2 class="title center">Options</h2>
+            </ion-header-bar>
+            <ion-content>
+                <div ng-controller="updateIntervalController">
+                    <div class="sidebar-item">
+                        Update frequency:
+                    </div>
+                    <div class="item range sidebar">
+                        30secs
+                        <input id="repeat-fader" type="range" step="data.step" name="repeat-time" ng-model="data.updateInterval" min="30" max="600" ng-change="formatInterval()">
+                        10mins
+                    </div>
+                    <div class="siderbar-item center">
+                        {{data.formattedInterval}}
+                    </div>
+                </div>
+                <div class="sidebar-item" ng-controller="accentController">
+                    Choose Accent:
+                    <select data-tap-disabled="true" class="sidebar-picker" ng-model="data.accent" ng-change="changeAccent()">
+                        <option>Australian</option>
+                        <option>American</option>
+                        <option selected>English</option>
+                        <option>South African</option>
+                    </select>
+                </div>
 
-            <br/>
-            <br/>
-            <div class="sidebar-item">
-            Voice of Cricket by <a href="http://www.xyglo.com" target="_blank">Xyglo BV</a>.  API provided by CricScore:  http://cricscore-api.appspot.com
-            </div>
-      </ion-content>
-    </ion-side-menu>
+                <div class="sidebar-item">
+                    Voice of Cricket by <a href="http://www.xyglo.com" target="_blank">Xyglo BV</a>.  API provided by CricScore:  http://cricscore-api.appspot.com
+                </div>
+            </ion-content>
+        </ion-side-menu>
 
-  </ion-side-menus>
-  </body>
+    </ion-side-menus>
+</body>
 </html>
