@@ -26,7 +26,7 @@ app.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
 
-    if(AdMob) {
+    if(window.AdMob) {
 
       var admobid = {};
       if( /(android)/i.test(navigator.userAgent) ) { // for android
