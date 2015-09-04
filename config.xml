@@ -5,7 +5,7 @@
     A hands-free Cricket app that reads the latest scores in your favourite accent
     </description>
     <author email="rich@xyglo.com" href="http://www.xyglo.com/">
-      Ionic Framework Team
+      Richard Bown, Xyglo BV
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -40,6 +40,11 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+    </platform>
+    <platform name="wp8">
+      <icon src="resources/windows/icon-99-tile.png" width="71" height="71"/>
+      <icon src="resources/windows/icon-170-tile.png" width="170" height="170"/>
+      <splash src="resources/windows/screen-768x1280.jpg" width="768" height="1280"/>
     </platform>
     <plugin name="cordova-plugin-device" spec="~1.0.1" />
     <plugin name="cordova-plugin-console" spec="~1.0.1" />

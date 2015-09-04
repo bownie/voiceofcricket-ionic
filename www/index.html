@@ -98,7 +98,7 @@
         </div>
 
         <div class="center" ng-controller="MatchController">
-          <select class="picker" ng-model="selection" name="selectedMatch" ng-change="change()" ng-options="match.id as (match.t1 + ' vs ' + match.t2) for match in matches">
+          <select data-tap-disabled="true" class="picker" ng-model="selection" name="selectedMatch" ng-change="change()" ng-options="match.id as (match.t1 + ' vs ' + match.t2) for match in matches">
           </select>
           </br>
           <div class="score-text">{{currentScore}}</div>
@@ -137,7 +137,7 @@
             <br/>
             <div class="sidebar-item" ng-controller="accentController">
               Choose Accent:</br>
-              <select class="sidebar-picker" ng-model="data.accent" ng-change="changeAccent()">
+              <select data-tap-disabled="true" class="sidebar-picker" ng-model="data.accent" ng-change="changeAccent()">
                 <option>Australian</option>
                 <option>American</option>
                 <option selected>English</option>
