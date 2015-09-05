@@ -1,10 +1,10 @@
 {
-  "name": "Voice of Cricket",
+  "name": "VoiceofCricket",
   "version": "1.0.1",
   "description": "Voice of Cricket: the commentator in your pocket",
   "dependencies": {
     "gulp": "^3.5.6",
-    "gulp-sass": "^1.3.3",
+    "gulp-sass": "^2.0.1",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0"

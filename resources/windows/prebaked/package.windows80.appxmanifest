@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+    <Identity Name="com.ionicframework.voiceofcricketionic875888" Publisher="CN=B978ECF5-E4A0-4905-9402-4ECBA7460817" Version="1.0.0.0" />
+    <Properties>
+        <DisplayName>Voice of Cricket</DisplayName>
+        <PublisherDisplayName>Xyglo</PublisherDisplayName>
+        <Logo>images\storelogo.png</Logo>
+    </Properties>
+    <Prerequisites>
+        <OSMinVersion>6.2.1</OSMinVersion>
+        <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+    </Prerequisites>
+    <Resources>
+        <Resource Language="x-generate" />
+    </Resources>
+    <Applications>
+        <Application Id="com.ionicframework.voiceofcricketionic875888" StartPage="www/index.html">
+            <VisualElements BackgroundColor="#464646" Description="CordovaApp" DisplayName="Voice of Cricket" ForegroundText="light" Logo="images\Square150x150Logo.png" SmallLogo="images\Square30x30Logo.png">
+                <DefaultTile ShowName="allLogos" WideLogo="images\Wide310x150Logo.png" />
+                <SplashScreen Image="images\splashscreen.png" />
+            </VisualElements>
+        </Application>
+    </Applications>
+    <Capabilities>
+        <Capability Name="internetClient" />
+        <Capability Name="musicLibrary" />
+        <DeviceCapability Name="microphone" />
+    </Capabilities>
+</Package>

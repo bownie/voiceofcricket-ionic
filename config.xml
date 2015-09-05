@@ -4,9 +4,7 @@
     <description>
     A hands-free Cricket app that reads the latest scores in your favourite accent
     </description>
-    <author email="rich@xyglo.com" href="http://www.xyglo.com/">
-      Richard Bown, Xyglo BV
-    </author>
+    <author email="rich@xyglo.com" href="http://www.xyglo.com/">Xyglo</author>
     <content src="index.html" />
     <access origin="*" />
     <preference name="webviewbounce" value="false" />
