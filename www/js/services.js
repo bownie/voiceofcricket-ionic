@@ -95,7 +95,7 @@ module.factory('fetchService', function($resource, $http, $rootScope, $q) {
 module.factory('voiceService', function($resource) {
 
   return {
-     doSpeech : function() {
+    doSpeech : function() {
       if (window.talkState == "started" ) {
 
         // If we have a match to talk about
@@ -105,13 +105,13 @@ module.factory('voiceService', function($resource) {
                 console.log("Speaking on WinApp");
 
                 TTS.speak({
-                    text: window.lastFetchedMatch,
-                    locale: window.accentSelected,
-                    rate: 1.0
+                  text: window.lastFetchedMatch,
+                  locale: window.accentSelected,
+                  rate: 1.0
                 }, function () {
                     console.log('Speaking on WinApp');
                 }, function (reason) {
-                    console.log('Failed to speak on WinApp');
+                    console.log('Failed to speak on WinApp =' + reason);
                 });
 
             } else if (window.isAndroid || window.isiOS) {

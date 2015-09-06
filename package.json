@@ -27,7 +27,7 @@
     "ios",
     {
       "platform": "android",
-      "locator": "windows"
+      "locator": "wp8"
     }
   ]
 }

@@ -41,6 +41,11 @@
   font-family: Montserrat;
   src: url(../fonts/Montserrat-Regular.otf);
   color: white;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  -ms-content-zooming: none;
+  -ms-touch-action: none;
 }
 
 .title {
@@ -131,3 +136,19 @@
   margin-top: 30%;
   margin-bottom: 30%;
 }
+
+@viewport
+{
+width:320px;
+}
+
+@-ms-viewport {
+width:320px;
+zoom-user:fixed;
+max-zoom:1;
+min-zoom:1;
+}
+
+body, html { 
+  -ms-overflow-style: none !important; 
+  }
