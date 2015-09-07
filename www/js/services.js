@@ -101,17 +101,17 @@ module.factory('voiceService', function($resource) {
         // If we have a match to talk about
         //
         if (window.lastFetchedMatch != "") {
-            if (window.isWinApp) {
-                console.log("Speaking on WinApp");
+            if (window.isWinPhoneApp) {
+                console.log("Speaking on WinPhoneApp");
 
                 TTS.speak({
                   text: window.lastFetchedMatch,
                   locale: window.accentSelected,
                   rate: 1.0
                 }, function () {
-                    console.log('Speaking on WinApp');
+                    console.log('Speaking on WinPhoneApp');
                 }, function (reason) {
-                    console.log('Failed to speak on WinApp =' + reason);
+                    console.log('Failed to speak on WinPhoneApp =' + reason);
                 });
 
             } else if (window.isAndroid || window.isiOS) {
@@ -159,17 +159,17 @@ module.factory('voiceService', function($resource) {
   
         // For TTS say nothing
           //
-          if (window.isWinApp) {
-              console.log("Stopping speaking on WinApp");
+          if (window.isWinPhoneApp) {
+              console.log("Stopping speaking on WinPhoneApp");
 
               TTS.speak({
                   text: "",
                   locale: window.accentSelected,
                   rate: 1.0
               }, function () {
-                  console.log('Speaking on WinApp');
+                  console.log('Speaking on WinPhoneApp');
               }, function (reason) {
-                  console.log('Failed to speak on WinApp');
+                  console.log('Failed to speak on WinPhoneApp with reason ' + reason);
               });
 
           } else if (window.isAndroid || window.isiOS ) {
