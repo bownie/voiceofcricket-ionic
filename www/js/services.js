@@ -92,20 +92,20 @@ module.factory('fetchService', function($resource, $http, $rootScope, $q) {
 
 // Read out the score
 //
-module.factory('voiceService', function($resource) {
+module.factory('voiceService', function($resource, $rootScope) {
 
   return {
     doSpeech : function() {
-      if (window.talkState == "started" ) {
+      if ($rootScope.talkState == "started" ) {
 
         // If we have a match to talk about
         //
-        if (window.lastFetchedMatch != "") {
+        if ($rootScope.currentScore != "") {
             if (window.isWinPhoneApp) {
                 console.log("Speaking on WinPhoneApp");
 
                 TTS.speak({
-                  text: window.lastFetchedMatch,
+                  text: $rootScope.currentScore,
                   locale: window.accentSelected,
                   rate: 1.0
                 }, function () {
@@ -116,7 +116,7 @@ module.factory('voiceService', function($resource) {
 
             } else if (window.isAndroid || window.isiOS) {
             TTS.speak({
-              text: window.lastFetchedMatch,
+              text: $rootScope.currentScore,
               locale: window.accentSelected,
               rate: 1.0
             }, function () {
@@ -131,7 +131,7 @@ module.factory('voiceService', function($resource) {
             msg.lang = window.accentSelected;
             msg.volume = 1.0;
             msg.rate = 1.0;
-            msg.text = window.lastFetchedMatch;
+            msg.text = $rootScope.currentScore;
             msg.onend = function(event) { console.log('Finished in ' + event.elapsedTime + ' seconds.'); };
             speechSynthesis.speak(msg);
 

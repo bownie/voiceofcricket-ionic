@@ -2,187 +2,121 @@
 //
 var matchModule = angular.module('matchesController', ['matchesServices']);
 
-matchModule.controller('voiceController', function ($scope, $http, voiceService, fetchService) {
-  $scope.toggleButton = function() { 
+matchModule.controller('MatchController', function($scope, $http, $window, voiceService, fetchService, $q, $interval, $rootScope) {
+
+  var updateId = null;
+
+  $scope.selection = 0;
+  $rootScope.currentScore = "Select a match from the menu above>";
+  $rootScope.talkState = "stopped";
+
+  $scope.toggleButton = function() {
     console.log("toggle button in controller");
 
-    if (window.talkState == "stopped" ) {
+    if ($rootScope.talkState == "stopped" ) {
 
-        document.getElementById("talk-button").src="img/StopButton.png";
-        window.talkState = "started";
+        $rootScope.talkState = "started";
 
-        if (window.timer == null) {
-          var count = 0;
-          window.timer = $.timer(function() {
+        // Now do some speech
+        //
+        console.log("First speech");
+        voiceService.doSpeech();
 
-              // Wankers
-              //
-              count++;
+        // Set interval timer
+        //
+        updateId = $interval(
+          function() {
+            console.log("updateScore");
 
-              // If the timer exceeds the interval then we refetch
-              //
-              if (count > window.localStorage.getItem('updateInterval')) {
-                console.log("Timer completed in " + count + " seconds");
+            // Fetch score again
+            //
+            var myDataPromise = fetchService.getMatch(window.matchIdSelected);
 
-                // Fetch score again
-                //
-                var myDataPromise = fetchService.getMatch(window.matchIdSelected);
-
-                // This is only run after $http completes
-                //
-                myDataPromise.then(function(result) {
+            // This is only run after $http completes
+            //
+            myDataPromise.then(function(result) {
   
-                  // Always store the last fetch
-                  //
-                  $scope.currentScore = result;
-                  window.lastFetchedMatch = $scope.currentScore;
+              // Always store the last fetch
+              //
+              $rootScope.currentScore = result;
+              console.log("Result = " + result);
+              //$scope.$apply();
+              //window.lastFetchedMatch = $scope.currentScore;
 
-                  // Check to see if we play it straight away
-                  //
-                  if (window.talkState == "started") {
-        
-                    // Invalidate timer, stop talking and refetch
-                    //
-                    if (window.timer != null) { 
-                      window.timer.stop();
-                      window.timer = null;
-                    }
-
-                    voiceService.doSpeech();
-                    // Reset counter but don't invalidate it
-                    //
-                    count = 0;
-                  }
-                });
-              }
- 
-          });
-          window.timer.set({ time : 1000, autostart : true });
-        }
+              console.log("Doing speech in timer");
+              voiceService.doSpeech();
+            });
+          },
+          window.localStorage.getItem('updateInterval') * 1000);
 
       } else {
  
-        document.getElementById("talk-button").src="img/StartButton.png";
-        talkState = "stopped";
+        console.log("Cancel talking");
 
-        // Invalidate timer
-        //
-        if (window.timer != null) {
-          window.timer.stop();
-          window.timer = null;
-        }
+        $rootScope.talkState = "stopped";
+        voiceService.doSpeech(); // to cancel speech
+        $interval.cancel(updateId);
+        updateId = null;
       }
-
-      // Now do some speech
-      //
-      voiceService.doSpeech();
-    }
-});
-
-matchModule.controller('MatchesController', function ($scope, $http) {
-
-    $scope.showSelectValue = function() {
-      console.log(mySelect);
     }
 
-    // Use the local proxy defined in ionic.project
-    //
-    $http.get('/csa').then(function(resp) {
+    $scope.updateScore = function() {
+      console.log("updateScore");
 
-      // For JSON responses, resp.data contains the result
+      // Fetch score again
       //
-      //log('Success', resp);
-      $scope.matches = resp.data;
+      var myDataPromise = fetchService.getMatch(window.matchIdSelected);
 
-
-    }, function(err) {
-
-      // err.status will contain the status code
+      // This is only run after $http completes
       //
-      //error('ERR', err);
-    });
-
-    $scope.matchId = 0;
-    $scope.matchSelected = function() {
-        $scope.matchId = id;
-        //info("Controlled matchSelected: match id = " + id);
-    }.bind($scope);
-
-
-    $scope.$watch('matchSelected', function() {
-      //info("SELECTED");
-        //$scope.action();
-    }); 
-
-    $scope.onSelectChange = function(id) {
-
-      $scope.item.size.code = $scope.selectedItem.code
-      alert('Template is : ' + id);
-      $scope.currentMatchScore = "Current Match Score";
-      alert("thing");  
+      myDataPromise.then(function(result) {
+  
+        // Always store the last fetch
+        //
+        $rootScope.currentScore = result;
+        console.log("Doing speech in timer");
+        voiceService.doSpeech();
+      });
     }
 
+    $scope.fetchMatches = function() {
+      $http.get('http://xyglo.com:1337/cricscore-api.appspot.com/csa').then(function(resp) {
 
-});
+        // For JSON responses, resp.data contains the result
+        //
+        //log('Success', resp);
+        $scope.matches = resp.data;
 
+      }, function(err) {
 
-matchModule.controller('MatchController', function($scope, $http, $window, voiceService, fetchService, $q) {
+        // err.status will contain the status code
+        //
+        console.log('ERR = ' + err);
+      })
+    }
 
-    $http.get('http://xyglo.com:1337/cricscore-api.appspot.com/csa').then(function(resp) {
-
-      // For JSON responses, resp.data contains the result
-      //
-      //log('Success', resp);
-      $scope.matches = resp.data;
-
-    }, function(err) {
-
-      // err.status will contain the status code
-      //
-      console.log('ERR = ' + err);
-    })
-
-    $scope.counter = 0;
-    $scope.currentScore = "Select a match from the menu above>";
-    $scope.selection = 0;
     $scope.change = function(id) {
 
       // Store the selected match id
       //
       window.matchIdSelected = $scope.selection;
 
+      console.log("Scope.selection = " + $scope.selection);
+
       var myDataPromise = fetchService.getMatch($scope.selection);
       myDataPromise.then(function(result) {  // this is only run after $http completes
 
         // Always store the last fetch
         //
-        $scope.currentScore = result;
-        window.lastFetchedMatch = $scope.currentScore;
-
-        // Check to see if we play it straight away
-        //
-        if (window.talkState == "started") {
-
-          // Invalidate timer, stop talking and refetch
-          //
-          if (window.timer != null) { 
-            window.timer.stop();
-            window.timer = null;
-          }
-
-          voiceService.doSpeech();
-        }
+        $rootScope.currentScore = result;
+        //window.lastFetchedMatch = $scope.currentScore;
+        console.log("match score = "  + result);
       });
     };
+
+    $scope.fetchMatches();
 });
 
-
-matchModule.controller('TestController', ['$scope', function($scope) {
-    $scope.counter = 0;
-    $scope.change = function() {
-    $scope.counter++;
-  };
-}]);
 
 matchModule.controller('updateIntervalController', ['$scope', '$filter', function($scope, $filter) {
   $scope.data = {};

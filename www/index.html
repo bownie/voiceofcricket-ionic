@@ -27,34 +27,8 @@
       var isWinApp = /MSAppHost/.test( navigator.userAgent );
       var isWinPhoneApp = /Windows Phone/.test( navigator.userAgent );
 
-      var talkState = "stopped";
-      var lastFetchedMatch = "";
       var accentSelected = "en-GB";
       var matchIdSelected = 0; // we need to store this between fetches
-
-      // Timer last fetch
-      //
-      var timer;
-      var lastFetchTime = 0;
-
-/*
-      if (isAndroid || isOS || isWinApp ) {
-        var customLocale = {};
-        customLocale.title = "Rate %@";
-        customLocale.message = "Love the Voice of Cricket? Then rate it! Many thanks for your support";
-        customLocale.cancelButtonLabel = "No, Thanks";
-        customLocale.laterButtonLabel = "Remind Me Later";
-        customLocale.rateButtonLabel = "Rate It Now";
-
-        AppRate.preferences.appName = "Voice of Cricket";
-        AppRate.preferences.customLocale = customLocale;
-        AppRate.preferences.usesUntilPrompt = 1;
-        AppRate.preferences.promptAgainForEachNewVersion = true;
-        AppRate.preferences.storeAppURL.ios = '1020598694';
-        AppRate.preferences.storeAppURL.android = 'market://details?id=com.ionicframework.voiceofcricketionic875888';
-        //AppRate.preferences.storeAppURL.windows8 = 'ms-windows-store:Review?name=<the Package Family Name of the application>';
-      }
-*/
     </script>
 
     <!-- windows compatibility -->
@@ -83,13 +57,12 @@
     <script src="js/jquery.timer.js"></script>
 
 </head>
-<!--<body ng-app="voiceOfCricket" ng-controller="MatchesController" class="platform-windows platform-cordova platform-webview">-->
 <body ng-app="voiceOfCricket" onload="onLoad()">
 
     <ion-side-menus>
 
         <!-- Center content -->
-        <ion-side-menu-content>
+        <ion-side-menu-content ng-controller="MatchController">
             <ion-header-bar class="sidebar">
                 <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
                 <div class="title center">Voice of Cricket</div>
@@ -105,12 +78,11 @@
                 </div>
             </ion-content>
 
-            <ion-footer-bar class="no-line">
-                <!--<div class="center" ng-controller="voiceController">-->
-                <button class="center image-wrapper" ng-click="toggleButton()" ng-controller="voiceController">
-                    <img id="talk-button" src="img/StartButton.png" border="0">
+            <ion-footer-bar class="no-line" ng-controller="MatchController">
+                <button class="center image-wrapper" ng-click="toggleButton()">
+                  <img id="talk-button" ng-if="talkState == 'started'"  src="img/StopButton.png" border="0">
+                  <img id="talk-button" ng-if="talkState == 'stopped'"  src="img/StartButton.png" border="0">
                 </button>
-                <!--</div>-->
             </ion-footer-bar>
         </ion-side-menu-content>
 
