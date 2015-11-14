@@ -189,6 +189,14 @@ matchModule.controller('accentController', ['$scope', '$filter', function($scope
       window.accentSelected = "en-ZA";
     } else if ($scope.data.accent == "American" ) {
       window.accentSelected = "en-US";
+    } else if ($scope.data.accent == "English Indian" ) {
+      window.accentSelected = "en-IN";
+    } else if ($scope.data.accent == "English Zimbabwe" ) {
+      window.accentSelected = "en-ZA";
+    } else if ($scope.data.accent == "Hindi" ) {
+      window.accentSelected = "hi-IN";
+    } else if ($scope.data.accent == "Irish" ) {
+      window.accentSelected = "en-IE";
     } else {
       alert("Can't change accent to " + $scope.data.accent);
     }
