@@ -84,14 +84,14 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
 
         // For JSON responses, resp.data contains the result
         //
-        //log('Success', resp);
+        console.log("Got matches = " + JSON.stringify(resp.data));
         $scope.matches = resp.data;
 
       }, function(err) {
 
         // err.status will contain the status code
         //
-        console.log('ERR = ' + err);
+        console.log('Failed to get matches ERR = ' + JSON.stringify(err));
       })
     }
 
