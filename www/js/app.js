@@ -26,6 +26,7 @@ app.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
 
+/*
     if(window.AdMob) {
 
       var admobid = {};
@@ -52,13 +53,13 @@ app.run(function($ionicPlatform) {
         adId: admobid.banner, 
         position: AdMob.AD_POSITION.TOP_CENTER, 
         autoShow: true } );
-
     }
+*/
 
     if (isAndroid) {
       var customLocale = {};
       customLocale.title = "Rate Voice of Cricket";
-      customLocale.message = "Love the Voice of Cricket? Then rate it! Many thanks for your support";
+      customLocale.message = "Do you love the Voice of Cricket? Then please rate it! Many thanks for your support";
       customLocale.cancelButtonLabel = "No, Thanks";
       customLocale.laterButtonLabel = "Remind Me Later";
       customLocale.rateButtonLabel = "Rate It Now";
@@ -67,8 +68,15 @@ app.run(function($ionicPlatform) {
       AppRate.preferences.usesUntilPrompt = 1;
       AppRate.preferences.promptAgainForEachNewVersion = true;
       AppRate.preferences.useLanguage = 'en';
+      AppRate.preferences.openStoreInApp = false;
       //AppRate.preferences.storeAppURL.ios = '1020598694';
       AppRate.preferences.storeAppURL.android = 'market://details?id=com.ionicframework.voiceofcricketionic875888';
+
+      //AppRate.preferences.callbacks.onButtonClicked = function(buttonId) {
+        //console.log("On button clicked " + buttonId);
+        //AppRate.navigateToAppStore();
+      //}
+
 
       AppRate.promptForRating(true);
     }
