@@ -49,14 +49,24 @@
         <preference name="DisallowOverscroll" value="true" />
     </platform>
     <plugin name="cordova-plugin-device" spec="~1.0.1" />
+<<<<<<< HEAD
     <plugin name="cordova-plugin-console" spec="~1.0.1" />
+=======
+>>>>>>> ee8d5138ce43b4f8e52b3b5663db0ee288d260ad
     <plugin name="cordova-plugin-whitelist" spec="~1.0.0" />
     <plugin name="cordova-plugin-splashscreen" spec="~2.1.0" />
     <plugin name="com.ionic.keyboard" spec="~1.0.4" />
     <plugin name="org.apache.cordova.media" spec="~0.2.16" />
+<<<<<<< HEAD
     <plugin name="org.apache.cordova.plugin.tts" spec="https://github.com/domaemon/org.apache.cordova.plugin.tts.git" />
     <plugin name="com.wordsbaking.cordova.tts" spec="~0.2.1" />
     <plugin name="cordova-plugin-admobpro" spec="~2.8.3" />
     <plugin name="org.pushandplay.cordova.apprate" spec="https://github.com/pushandplay/cordova-plugin-apprate.git" />
     <plugin name="org.apache.cordova.inappbrowser" spec="~0.6.0" />
+=======
+    <plugin name="cordova-plugin-admobpro" spec="~2.8.3" />
+    <plugin name="org.pushandplay.cordova.apprate" spec="https://github.com/pushandplay/cordova-plugin-apprate.git" />
+    <plugin name="com.wordsbaking.cordova.tts" spec="~0.2.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~1.0.1" />
+>>>>>>> ee8d5138ce43b4f8e52b3b5663db0ee288d260ad
 </widget>
