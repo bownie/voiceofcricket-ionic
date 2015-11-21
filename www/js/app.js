@@ -46,15 +46,20 @@ app.run(function($ionicPlatform) {
           };
       }
 
-      // Launch the banner
-      //
-      AdMob.createBanner( {
-        adId: admobid.banner, 
-        position: AdMob.AD_POSITION.TOP_CENTER, 
-        autoShow: true } );
 
+      // For the moment we ignore Android
+      //
+      //if (!isAndroid) {
+        // Launch the banner
+        //
+        AdMob.createBanner( {
+          adId: admobid.banner, 
+          position: AdMob.AD_POSITION.BOTTOM_CENTER, 
+          autoShow: true } );
+      //}
     }
 
+/*
     if (isAndroid) {
       var customLocale = {};
       customLocale.title = "Rate Voice of Cricket";
@@ -72,6 +77,7 @@ app.run(function($ionicPlatform) {
 
       AppRate.promptForRating(true);
     }
+*/
 
   });
 })

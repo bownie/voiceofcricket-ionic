@@ -7,7 +7,7 @@ matchModule.controller('MatchController', function($scope, $http, $window, voice
   var updateId = null;
 
   $scope.selection = 0;
-  $rootScope.currentScore = "Select a match from the menu above>";
+  $rootScope.currentScore = "Select a match from the menu above";
   $rootScope.talkState = "stopped";
 
   $scope.toggleButton = function() {
